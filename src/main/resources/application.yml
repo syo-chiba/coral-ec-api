@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/mynewapi
+    username: myuser
+    password: mypass
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate # 最初は validate 推奨
+    open-in-view: false
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
