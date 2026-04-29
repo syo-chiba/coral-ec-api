@@ -2,6 +2,8 @@ package com.example.coral_ec.controller;
 
 import com.example.coral_ec.dto.RegisterRequest;
 import com.example.coral_ec.dto.RegisterResponse;
+import com.example.coral_ec.dto.LoginRequest;
+import com.example.coral_ec.dto.LoginResponse;
 import com.example.coral_ec.user.UserRegistrationService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -25,5 +27,11 @@ public class AuthController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public RegisterResponse register(@Valid @RequestBody RegisterRequest request) {
 		return userRegistrationService.register(request);
+	}
+	
+	@PostMapping("/login")
+	@ResponseStatus(HttpStatus.OK)
+	public LoginResponse login(@Valid @RequestBody LoginRequest request) {
+		return userRegistrationService.login(request);
 	}
 }

@@ -2,6 +2,9 @@ package com.example.coral_ec.user;
 
 import com.example.coral_ec.dto.RegisterRequest;
 import com.example.coral_ec.dto.RegisterResponse;
+import com.example.coral_ec.dto.LoginRequest;
+import com.example.coral_ec.dto.LoginResponse;
+import com.example.coral_ec.exception.InvalidCredentialsException;
 import com.example.coral_ec.exception.EmailAlreadyExistsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,6 +41,24 @@ public class UserRegistrationService {
 				saved.getEmail(),
 				saved.getRole(),
 				saved.getCreatedAt()
+		);
+	}
+	
+	@Transactional(readOnly = true)
+	public LoginResponse login(LoginRequest request) {
+		User user = userRepository.findByEmailIgnoreCase(request.email().trim().toLowerCase())
+				.orElseThrow(InvalidCredentialsException::new);
+		
+		boolean matched = passwordEncoder.matches(request.password(), user.getPasswordHash());
+		if (!matched) {
+			throw new InvalidCredentialsException();
+		}
+		
+		return new LoginResponse(
+				user.getId(),
+				user.getName(),
+				user.getEmail(),
+				user.getRole()
 		);
 	}
 }
