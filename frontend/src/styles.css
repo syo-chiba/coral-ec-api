@@ -97,3 +97,50 @@ button:disabled {
   color: #b91c1c;
   font-size: 12px;
 }
+
+textarea {
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 14px;
+  resize: vertical;
+}
+
+button {
+  height: 40px;
+  border: none;
+  border-radius: 8px;
+  background: #2563eb;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+}
+
+.success {
+  margin-top: 14px;
+  color: #166534;
+  background: #dcfce7;
+  border: 1px solid #86efac;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.error {
+  margin-top: 14px;
+  color: #991b1b;
+  background: #fee2e2;
+  border: 1px solid #fca5a5;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.field-error {
+  margin: -4px 0 0;
+  color: #b91c1c;
+  font-size: 12px;
+}
