@@ -5,6 +5,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import com.example.coral_ec.exception.ItemNotFoundException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,5 +26,11 @@ public class ApiExceptionHandler {
         ex.getBindingResult().getFieldErrors()
                 .forEach(fieldError -> errors.put(fieldError.getField(), fieldError.getDefaultMessage()));
         return errors;
+    }
+    
+    @ExceptionHandler(ItemNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Map<String, String> handleItemNotFound(ItemNotFoundException ex) {
+        return Map.of("error", ex.getMessage());
     }
 }

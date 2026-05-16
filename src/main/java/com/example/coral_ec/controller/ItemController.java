@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
 
 @RestController
@@ -40,5 +41,10 @@ public class ItemController {
             @RequestParam(required = false) Integer maxPrice
     ) {
         return itemService.searchItems(keyword, category, condition, minPrice, maxPrice);
+    }
+    
+    @GetMapping("/{id}")
+    public ItemResponse detail(@PathVariable Long id) {
+        return itemService.getItem(id);
     }
 }

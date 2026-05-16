@@ -2,6 +2,7 @@ package com.example.coral_ec.item;
 
 import com.example.coral_ec.dto.CreateItemRequest;
 import com.example.coral_ec.dto.ItemResponse;
+import com.example.coral_ec.exception.ItemNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -39,6 +40,14 @@ public class ItemService {
     }
     
     @Transactional(readOnly = true)
+    public ItemResponse getItem(Long itemId) {
+        Item item = itemRepository.findById(itemId)
+                .orElseThrow(() -> new ItemNotFoundException(itemId));
+
+        return toResponse(item);
+    }
+    
+    @Transactional(readOnly = true)
     public List<ItemResponse> searchItems(
             String keyword,
             String category,
@@ -46,16 +55,23 @@ public class ItemService {
             Integer minPrice,
             Integer maxPrice
     ) {
-        return itemRepository.searchActiveItems(
-                nullableTrim(keyword),
-                nullableTrim(category),
-                nullableTrim(condition),
-                minPrice,
-                maxPrice
-        )
-        .stream()
-        .map(this::toResponse)
-        .toList();
+        String normalizedKeyword = nullableTrim(keyword);
+        String normalizedCategory = nullableTrim(category);
+        String normalizedCondition = nullableTrim(condition);
+
+        return itemRepository.findByStatusOrderByCreatedAtDesc("active")
+                .stream()
+                .filter(item -> normalizedKeyword == null
+                        || item.getTitle().toLowerCase().contains(normalizedKeyword.toLowerCase())
+                        || item.getDescription().toLowerCase().contains(normalizedKeyword.toLowerCase()))
+                .filter(item -> normalizedCategory == null
+                        || normalizedCategory.equals(item.getCategory()))
+                .filter(item -> normalizedCondition == null
+                        || normalizedCondition.equals(item.getCondition()))
+                .filter(item -> minPrice == null || item.getPrice() >= minPrice)
+                .filter(item -> maxPrice == null || item.getPrice() <= maxPrice)
+                .map(this::toResponse)
+                .toList();
     }
     
     private ItemResponse toResponse(Item item) {

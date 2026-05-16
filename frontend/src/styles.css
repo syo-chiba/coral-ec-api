@@ -224,3 +224,19 @@ select {
 .button-row button[type="button"] {
   background: #64748b;
 }
+
+.detail-card {
+  padding: 20px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #ffffff;
+  margin-top: 16px;
+}
+
+.detail-card section {
+  margin-top: 18px;
+}
+
+.detail-card h3 {
+  margin-bottom: 8px;
+}

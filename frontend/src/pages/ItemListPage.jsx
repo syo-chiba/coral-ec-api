@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080'
 
-export default function ItemListPage() {
+export default function ItemListPage({ onSelectItem }) {
   const [items, setItems] = useState([])
 
   const [keyword, setKeyword] = useState('')
@@ -157,6 +157,10 @@ export default function ItemListPage() {
             <p className="item-meta">
               出品者ID: {item.sellerId} / 状態: {item.status}
             </p>
+			
+			<button type="button" onClick={() => onSelectItem(item.id)}>
+			  詳細を見る
+			</button>
           </article>
         ))}
       </div>
