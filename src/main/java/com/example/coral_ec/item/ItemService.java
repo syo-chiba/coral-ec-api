@@ -4,6 +4,7 @@ import com.example.coral_ec.dto.CreateItemRequest;
 import com.example.coral_ec.dto.ItemResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
 
 @Service
 public class ItemService {
@@ -27,6 +28,14 @@ public class ItemService {
 
         Item saved = itemRepository.save(item);
         return toResponse(saved);
+    }
+    
+    @Transactional(readOnly = true)
+    public List<ItemResponse> getActiveItems() {
+    	return itemRepository.findByStatusOrderByCreatedAtDesc("active")
+    			.stream()
+    			.map(this::toResponse)
+    			.toList();
     }
 
     private ItemResponse toResponse(Item item) {
