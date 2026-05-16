@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @RestController
@@ -31,7 +32,13 @@ public class ItemController {
     }
     
     @GetMapping
-    public List<ItemResponse> list() {
-    	return itemService.getActiveItems();
+    public List<ItemResponse> list(
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String condition,
+            @RequestParam(required = false) Integer minPrice,
+            @RequestParam(required = false) Integer maxPrice
+    ) {
+        return itemService.searchItems(keyword, category, condition, minPrice, maxPrice);
     }
 }

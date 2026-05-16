@@ -37,7 +37,27 @@ public class ItemService {
     			.map(this::toResponse)
     			.toList();
     }
-
+    
+    @Transactional(readOnly = true)
+    public List<ItemResponse> searchItems(
+            String keyword,
+            String category,
+            String condition,
+            Integer minPrice,
+            Integer maxPrice
+    ) {
+        return itemRepository.searchActiveItems(
+                nullableTrim(keyword),
+                nullableTrim(category),
+                nullableTrim(condition),
+                minPrice,
+                maxPrice
+        )
+        .stream()
+        .map(this::toResponse)
+        .toList();
+    }
+    
     private ItemResponse toResponse(Item item) {
         return new ItemResponse(
                 item.getId(),

@@ -210,3 +210,17 @@ select {
   margin-top: 20px;
   color: #64748b;
 }
+
+.search-card {
+  margin-bottom: 20px;
+}
+
+.button-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.button-row button[type="button"] {
+  background: #64748b;
+}
