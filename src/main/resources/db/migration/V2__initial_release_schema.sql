@@ -7,6 +7,10 @@ ALTER TABLE users
   ADD COLUMN IF NOT EXISTS created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   ADD COLUMN IF NOT EXISTS updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
 
+-- Backfill safety for existing rows
+UPDATE users SET password_hash = COALESCE(password_hash, 'TEMP_HASH_CHANGE_ME');
+ALTER TABLE users ALTER COLUMN password_hash SET NOT NULL;
+
 -- profiles (1:1 with users)
 CREATE TABLE IF NOT EXISTS profiles (
   user_id BIGINT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
