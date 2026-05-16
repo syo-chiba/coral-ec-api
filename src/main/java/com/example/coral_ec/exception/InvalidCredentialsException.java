@@ -1,0 +1,7 @@
+package com.example.coral_ec.exception;
+
+public class InvalidCredentialsException extends RuntimeException {
+	public InvalidCredentialsException() {
+		super("メールアドレスまたはパスワードが正しくありません。");
+	}
+}
