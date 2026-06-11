@@ -70,6 +70,8 @@ npm run dev
 
 ## 4. 起動確認
 
+Spring Boot APIだけをブラウザで確認する詳しい手順は `docs/spring-boot-local-viewing.md` も参照してください。
+
 ### 4-1. API単体確認
 
 ```bash
