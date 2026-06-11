@@ -89,6 +89,32 @@ http://localhost:5173
 
 ## 4. よくあるエラー
 
+### Docker Desktop が起動していない
+
+Windowsで以下のようなエラーが出る場合は、Docker Desktop または Docker daemon が起動できていません。
+
+```text
+failed to connect to the docker API at npipe:////./pipe/dockerDesktopLinuxEngine
+```
+
+対処手順:
+
+1. Windowsのスタートメニューから Docker Desktop を起動する
+2. Docker Desktop の画面左下またはステータス表示が `Engine running` になるまで待つ
+3. ターミナルを開き直す
+4. 以下でDockerが応答するか確認する
+
+```bash
+docker version
+docker compose version
+```
+
+その後、再度DBを起動します。
+
+```bash
+docker compose up -d
+```
+
 ### DB接続エラーになる
 
 まずDBコンテナが起動しているか確認します。

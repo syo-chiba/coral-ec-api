@@ -174,6 +174,16 @@ npm config list
 
 社内プロキシが必要な場合は、会社の開発環境手順に従って npm proxy / registry を設定してください。
 
+### docker compose up -d が Docker API 接続エラーになる
+
+Windowsで `failed to connect to the docker API at npipe:////./pipe/dockerDesktopLinuxEngine` と表示される場合は、Docker Desktop が起動していないか、Docker engine の起動が完了していません。
+
+1. Docker Desktop を起動する
+2. `Engine running` になるまで待つ
+3. ターミナルを開き直す
+4. `docker version` を実行して応答を確認する
+5. `docker compose up -d` を再実行する
+
 ### Spring Boot がDB接続で失敗する
 
 Docker のDBが起動しているか確認します。
