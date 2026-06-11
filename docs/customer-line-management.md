@@ -32,7 +32,10 @@ Spring Boot + TypeScript + Lit + GitHub Actions の実務寄り学習用とし�
 
 ## ローカル起動
 
+詳しい初回セットアップ、日々の作業手順、トラブルシュートは `docs/local-development-preparation.md` を参照してください。
+
 ```bash
+docker compose up -d
 ./gradlew bootRun
 ```
 
