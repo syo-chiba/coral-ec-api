@@ -202,11 +202,11 @@ return RegisterResponse(saved...)
 次のStep3で Controller + ExceptionHandler を追加し、
 HTTPステータス（201 / 409 / 400）をAPIとして確定させる。
 
-## 9. Step A: Reactフロント土台を作る
+## 9. Step A: Litフロント土台を作る
 
 ### 9-1. 初期セットアップ
 
-`frontend/` に React + Vite の最小構成を配置。
+`frontend/` に TypeScript + Lit + Vite の最小構成を配置。
 
 ### 9-2. 起動手順
 
@@ -216,7 +216,11 @@ npm install
 npm run dev
 ```
 
-### 9-3. 環境変数
+### 9-3. ローカルAPI連携
+
+Vite dev server は `/api` を Spring Boot の `http://localhost:8080` へプロキシします。詳細なローカル準備は `docs/local-development-preparation.md` を参照してください。
+
+### 9-4. 環境変数
 
 `.env.example` を `.env` にコピーし、API接続先を必要に応じて変更する。
 
