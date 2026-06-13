@@ -2,7 +2,10 @@ package com.example.coral_ec.customer;
 
 import com.example.coral_ec.dto.CustomerResponse;
 import com.example.coral_ec.dto.CustomerResponse.LineStatus;
+import com.example.coral_ec.exception.CustomerNotFoundException;
+
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -67,5 +70,13 @@ public class CustomerController {
 
     private static boolean contains(String value, String keyword) {
         return value.toLowerCase(Locale.ROOT).contains(keyword);
+    }
+    
+    @GetMapping("/{customerId}")
+    public CustomerResponse getCustomer(@PathVariable String customerId) {
+        return CUSTOMERS.stream()
+                .filter(customer -> customer.customerId().equalsIgnoreCase(customerId))
+                .findFirst()
+                .orElseThrow(() -> new CustomerNotFoundException(customerId));
     }
 }
