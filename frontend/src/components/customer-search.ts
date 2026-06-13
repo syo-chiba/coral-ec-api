@@ -1,7 +1,8 @@
 import { LitElement, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import './customer-list';
-import { searchCustomers } from '../services/customer-api';
+import './customer-detail';
+import { getCustomer, searchCustomers } from '../services/customer-api';
 import type { Customer } from '../types/customer';
 
 @customElement('customer-search')
@@ -17,6 +18,15 @@ export class CustomerSearch extends LitElement {
 
   @state()
   private errorMessage = '';
+  
+  @state()
+  private selectedCustomer: Customer | null = null;
+  
+  @state()
+  private detailLoading = false;
+  
+  @state()
+  private detailErrorMessage = '';
 
   protected createRenderRoot() {
     return this;
@@ -52,9 +62,27 @@ export class CustomerSearch extends LitElement {
             </button>
           </div>
         </form>
+		
+		${this.errorMessage
+		  ? html`<p class="error-message" role="alert">${this.errorMessage}</p>`
+		  : null}
 
-        ${this.errorMessage ? html`<p class="error-message" role="alert">${this.errorMessage}</p>` : null}
-        ${this.loading ? html`<p class="loading-message">顧客情報を取得しています...</p>` : html`<customer-list .customers=${this.customers}></customer-list>`}
+		${this.loading
+		  ? html`<p class="loading-message">顧客情報を取得しています...</p>`
+		  : html`
+		      <customer-list
+		        .customers=${this.customers}
+		        @customer-selected=${this.onCustomerSelected}
+		      ></customer-list>
+		    `}
+
+		${this.detailErrorMessage
+		  ? html`<p class="error-message" role="alert">${this.detailErrorMessage}</p>`
+		  : null}
+
+		  ${this.detailLoading
+		    ? html`<p class="loading-message">顧客詳細を取得しています...</p>`
+		    : html`<customer-detail .customer=${this.selectedCustomer}></customer-detail>`}
       </section>
     `;
   }
@@ -71,6 +99,8 @@ export class CustomerSearch extends LitElement {
   private async executeSearch() {
     this.loading = true;
     this.errorMessage = '';
+    this.selectedCustomer = null;
+    this.detailErrorMessage = '';
 
     try {
       this.customers = await searchCustomers(this.keyword);
@@ -79,6 +109,20 @@ export class CustomerSearch extends LitElement {
       this.errorMessage = '顧客検索に失敗しました。時間をおいて再度お試しください。';
     } finally {
       this.loading = false;
+    }
+  }
+  
+  private async onCustomerSelected(event: CustomEvent<{ customerId: string }>) {
+    this.detailLoading = true;
+    this.detailErrorMessage = '';
+
+    try {
+      this.selectedCustomer = await getCustomer(event.detail.customerId);
+    } catch {
+      this.selectedCustomer = null;
+      this.detailErrorMessage = '顧客詳細の取得に失敗しました。時間をおいて再度お試しください。';
+    } finally {
+      this.detailLoading = false;
     }
   }
 }

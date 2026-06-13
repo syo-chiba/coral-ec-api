@@ -16,3 +16,12 @@ export async function searchCustomers(keyword: string): Promise<Customer[]> {
 
   return response.json() as Promise<Customer[]>;
 }
+
+export async function getCustomer(customerId: string): Promise<Customer> {
+	const response =await fetch(`/api/customers/${encodeURIComponent(customerId)}`);
+	
+	if (!response.ok) {
+		throw new Error('顧客詳細APIでエラーが発生しました');
+	}
+	return response.json() as Promise<Customer>;
+}
