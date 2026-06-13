@@ -16,6 +16,14 @@ export class CustomerList extends LitElement {
   protected createRenderRoot() {
     return this;
   }
+  
+  private selectCustomer(customerId: string) {
+    this.dispatchEvent(new CustomEvent('customer-selected', {
+      detail: { customerId },
+      bubbles: true,
+      composed: true
+    }));
+  }
 
   render() {
     if (this.customers.length === 0) {
@@ -48,6 +56,11 @@ export class CustomerList extends LitElement {
                 <td><span class="status ${customer.lineStatus.toLowerCase()}">${lineStatusLabels[customer.lineStatus]}</span></td>
                 <td>${customer.billingAmount.toLocaleString('ja-JP')}円</td>
                 <td>${customer.lastCommunicationDate}</td>
+				<td>
+					<button type="button" @click=${() => this.selectCustomer(customer.customerId)}>
+					  詳細
+					</button>
+				</td>
               </tr>
             `
           )}

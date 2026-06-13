@@ -33,4 +33,10 @@ public class ApiExceptionHandler {
     public Map<String, String> handleItemNotFound(ItemNotFoundException ex) {
         return Map.of("error", ex.getMessage());
     }
+    
+    @ExceptionHandler(CustomerNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Map<String, String> handleCustomerNotFound(CustomerNotFoundException ex) {
+        return Map.of("error", ex.getMessage());
+    }
 }
